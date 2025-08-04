@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import openai
+from openai import OpenAI
 
 app = Flask(__name__)
 
 # Set your OpenAI key here
-openai.api_key = "YOUR_OPENAI_API_KEY"
+openai.api_key = "insert-key-here"
+client = OpenAI(api_key=openai.api_key)
 
 @app.route("/")
 def home():
@@ -15,8 +17,9 @@ def chat():
     user_message = request.json.get("message")
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
+        # response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful career assistant."},
                 {"role": "user", "content": user_message}
